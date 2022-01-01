@@ -65,7 +65,7 @@ class Clock extends React.Component {
         // De base on doit faire 'this.tick', mais si on
         // fait ça le contexte de 'this' sera perdu,
         // il faut donc faire this.tick.bind(this)
-        this.timer = window.setInterval(this.tick.bind(this), 100)
+        this.timer = window.setInterval(this.tick.bind(this), 1000)
     }
 
     // Permet de déterminer quand un composant est supprimé
@@ -80,21 +80,52 @@ class Clock extends React.Component {
     }
 
     render () {
-        const date = new Date();
         return <div>
             Il est {this.state.date.toLocaleDateString()} {this.state.date.toLocaleTimeString()}
         </div>
     }
 }
 
-// Composant qui incrémente
+// Composant qui commence à 10 et qui toutes les secondes,
+// incrémente la valeur
 class Incrementer extends React.Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props)
-        this.state = 0
+        this.state = {
+            n: props.start,
+        }
+        this.timer = null
     }
 
+    componentDidMount() {
+        this.timer = window.setInterval(this.increment.bind(this), 1000)
+    }
+
+    componentwillUnmount() {
+        window.clearInterval(this.timer)
+    }
+
+    increment() {
+        this.setState((state, props) => ({n: state.n + props.step}))
+    }
+
+    render () {
+        return <div>
+            <hr></hr>
+            <h2>Composant Increment</h2>
+            {this.state.n}
+        </div>
+    }
+}
+
+// DefaultProps (fourni dans la documentation React)
+// permet d'envoyer des props par default 
+// si rien n'est donnée
+// Mais cette manière d'écrire à évolué
+Incrementer.defaultProps = {
+    start: 0,
+    step: 1
 }
 
 // Composant dans un composant
@@ -103,7 +134,8 @@ function Home () {
         <Welcome name="Dorothée" />
         <Welcome name="Jean" />
         <Clock />
-        {/* <Increment /> */}
+        <Incrementer start={10} />
+        <Incrementer start={10} step={10} />
     </div>
 }
 // Lorsque notre composant est monté (mis dans notre dome)
