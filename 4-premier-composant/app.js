@@ -94,27 +94,61 @@ class Incrementer extends React.Component {
         super(props)
         this.state = {
             n: props.start,
+            timer: null
         }
-        this.timer = null
+        this.toggle = this.toggle.bind(this)
+        this.reset = this.reset.bind(this)
     }
 
     componentDidMount() {
-        this.timer = window.setInterval(this.increment.bind(this), 1000)
+        this.play()
     }
 
     componentwillUnmount() {
-        window.clearInterval(this.timer)
+        window.clearInterval(this.state.timer)
     }
 
     increment() {
         this.setState((state, props) => ({n: state.n + props.step}))
     }
 
+    pause () {
+        window.clearInterval(this.state.timer)
+        this.setState({
+            timer: null
+        })
+    }
+
+    play () {
+        // this.timer = window.setInterval(this.increment.bind(this), 1000)
+        window.clearInterval(this.state.timer)
+        this.setState({
+            timer: window.setInterval(this.increment.bind(this), 1000)
+        })
+    }
+
+    reset () {
+        this.pause()
+        this.play()
+        this.setState((state, props) => ({n : props.start}))
+    }
+
+    toggle() {
+        return this.state.timer ? this.pause() : this.play()
+    }
+
+    label() {
+        return this.state.timer ? 'Pause' : 'Lecture'
+    }
+
     render () {
+        console.log('render')
         return <div>
             <hr></hr>
             <h2>Composant Increment</h2>
-            {this.state.n}
+            Valeur: {this.state.n} 
+            <button onClick={this.toggle}>{this.label()}</button> 
+            <button onClick={this.reset}>Réinitialiser</button> 
         </div>
     }
 }
@@ -128,14 +162,36 @@ Incrementer.defaultProps = {
     step: 1
 }
 
+// class ManuelIncrementer extends React.Component {
+
+//     constructor (props) {
+//         super(props)
+//         this.state = {n: 0}
+//     }
+
+//     increment(e) {
+//         e.preventDefault()
+//         this.setState((state, props) => ({n: state.n + 1}))
+//     }
+
+//     render() {
+//         return <div>
+//             <hr></hr>
+//             <div>Valeur : {this.state.n} <a href="http://grafikart.fr" onClick={this.increment.bind(this)} >Incrémenter</a></div>
+//         </div>
+//     }
+
+// }
+
 // Composant dans un composant
 function Home () {
     return <div>
         <Welcome name="Dorothée" />
         <Welcome name="Jean" />
-        <Clock />
-        <Incrementer start={10} />
-        <Incrementer start={10} step={10} />
+        {/* <ManuelIncrementer /> */}
+        {/* <Clock />*/}
+        <Incrementer />
+        {/* <Incrementer start={10} step={10} />  */}
     </div>
 }
 // Lorsque notre composant est monté (mis dans notre dome)
