@@ -190,7 +190,7 @@ function Home () {
         <Welcome name="Jean" />
         {/* <ManuelIncrementer /> */}
         {/* <Clock />*/}
-        <Incrementer />
+        {/* <Incrementer /> */}
         {/* <Incrementer start={10} step={10} />  */}
     </div>
 }
