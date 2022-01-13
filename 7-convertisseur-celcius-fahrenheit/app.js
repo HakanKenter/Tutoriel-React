@@ -94,7 +94,7 @@ class Calculator extends React.Component {
         // this.state
         const {temperature, scale} = this.state
         const celsius = scale === 'c' ? temperature : tryConvert(temperature, toCelsius)
-        const fahrenheit = scale === 'f' ? temperature : tryConvert(temperature, toCelsius)
+        const fahrenheit = scale === 'f' ? temperature : tryConvert(temperature, toFahrenheit)
         return <div>
             {/* <div className='form-group'>
                 <label htmlFor="celsuis">Temperature en Celsius</label>
