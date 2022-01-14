@@ -9,6 +9,7 @@ const PRODUCTS = [
 
 function ProductRow ({products}) {
     const name = products.stocked ? products.name : <span className="text-danger">{products.name}</span>
+    console.log('render')
     return <tr>
         <td>{name}</td>
         <td>{products.price}</td>
